@@ -1,0 +1,28 @@
+{
+  "name": "todomvc-cypress",
+  "version": "1.0.0",
+  "description": "a simple set of test to automate the todo mvc app",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulCluver/todomvc-cypress.git"
+  },
+  "keywords": [
+    "test",
+    "automation",
+    "cypress",
+    "todo-mvc"
+  ],
+  "author": "Paul Cluver",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PaulCluver/todomvc-cypress/issues"
+  },
+  "homepage": "https://github.com/PaulCluver/todomvc-cypress#readme",
+  "devDependencies": {
+    "cypress": "^9.4.1"
+  }
+}
