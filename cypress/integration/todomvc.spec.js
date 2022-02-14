@@ -1,27 +1,75 @@
 /// <reference types="cypress" />
 describe('automate the to-do mvc app', () => {
   beforeEach(() => {
-    cy.visit('https://todomvc.com/examples/vanillajs/')
-  })
-
-  it.only('should allow me to add a todo', () => {
-    cy.get('.new-todo').type(`Feed the cat{enter}`);
-    cy.get('.todo-list li').should('have.length', 1);
-    cy.get('.todo-list li').should('have.text', 'Feed the cat');
-    /*
+    cy.visit('/');
     cy.addToDo('.new-todo', 'Feed the cat');
-    cy.assertShould('.todo-list li','have.length', 1)
-    .first()
-    .should('have.text', 'Feed the cat');
-    */
   });
 
-  it('should allow me to update a todo', () => {});
-  it('should allow me to delete a todo', () => {});
-  it('should allow me to mark a todo as complete', () => {});
-  it('should allow me to un-mark a todo as complete', () => {});
-  it('should allow me to view all todos', () => {});
-  it('should allow me to view all active todos', () => {});
-  it('should allow me to view all completed todos', () => {});
-  it('should list the number of items left to complete', () => {});
+  afterEach(() => {
+    localStorage.clear();
+  })
+
+  it('should allow me to add a todo', () => {
+    cy.get('.todo-list li')
+      .should('have.length', 1)
+      .first()
+      .should('have.text', 'Feed the cat');
+  });
+
+  it('should allow me to update a todo', () => {
+    cy.updateToDo('.todo-list li', 'Feed the dogs');
+    cy.get('.todo-list li')
+      .should('have.length', 1)
+      .first()
+      .should('have.text', 'Feed the dogs');
+  });
+
+  it('should allow me to delete a todo', () => {
+    cy.get('body > section > section > ul > li:nth-child(1) > div > button').click({ force: true });
+    cy.get('.todo-list li')
+      .should('have.length', 0);
+  });
+
+  it('should allow me to mark a todo as complete', () => {
+    cy.toggleToDo(0);
+    cy.get('.todo-list li')
+      .first()
+      .should('have.class', 'completed');
+  });
+
+  it('should allow me to un-mark a todo as complete', () => {
+    cy.toggleToDo(0);
+    cy.toggleToDo(0);
+    cy.get('.todo-list li')
+      .first()
+      .should('not.have.class', 'completed');
+  });
+
+  it('should allow me to view all todos', () => {
+    cy.addToDo('.new-todo', 'Walk the dog');
+    cy.filterClick(1);
+    cy.get('.todo-list li')
+      .should('have.length', 2);
+  });
+
+  it('should allow me to view all active todos', () => {
+    cy.filterClick(2);
+    cy.get('.todo-list li')
+      .should('have.length', 1);
+  });
+
+  it('should allow me to view all completed todos', () => {
+    cy.addToDo('.new-todo', 'Walk the dog');
+    cy.toggleToDo(0);
+    cy.filterClick(3);
+    cy.get('.todo-list li')
+      .should('have.length', 1);
+  });
+
+  it('should list the number of items left to complete', () => {
+    cy.addToDo('.new-todo', 'Walk the dog');
+    cy.toggleToDo(0);
+    cy.get('span.todo-count')
+      .should('have.text', '1 item left');
+  });
 })
